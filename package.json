@@ -1,0 +1,45 @@
+{
+  "name": "stade",
+  "version": "1.0.0",
+  "description": "A tool to mirror Spotify playlists onto YouTube and download tracks as MP3.",
+  "main": "main.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "ffmpeg-static": "^5.2.0",
+    "googleapis": "^171.4.0"
+  },
+  "devDependencies": {
+    "electron": "^29.1.0",
+    "electron-builder": "^24.13.2"
+  },
+  "build": {
+    "appId": "com.stade.app",
+    "productName": "Stade",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "icon.png",
+      "category": "AudioVideo"
+    },
+    "asarUnpack": [
+      "node_modules/ffmpeg-static/**"
+    ],
+    "files": [
+      "**/*",
+      "!dist/**",
+      "!**/*.md",
+      "!**/.env*"
+    ]
+  }
+}

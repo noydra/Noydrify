@@ -1,0 +1,389 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self';" />
+  <title>Stade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div id="view-setup" class="view hidden">
+    <div class="centered-card">
+      <p class="card-sub" data-i18n="setup.subtitle">Enter your own API credentials to use Stade.</p>
+
+      <div class="form-group">
+        <label class="form-label" data-i18n="setup.ytClientId">YouTube Client ID</label>
+        <input id="setup-yt-id" class="form-input" type="text" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="setup.ytClientSecret">YouTube Client Secret</label>
+        <input id="setup-yt-secret" class="form-input" type="password" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="setup.spotifyClientId">Spotify Client ID</label>
+        <input id="setup-sp-id" class="form-input" type="text" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="setup.spotifyClientSecret">Spotify Client Secret</label>
+        <input id="setup-sp-secret" class="form-input" type="password" autocomplete="off" spellcheck="false" />
+      </div>
+
+      <p class="form-hint" data-i18n="setup.help">
+        Create credentials at the Google Cloud Console (YouTube Data API v3) and the Spotify Developer Dashboard.<br/>
+        • Spotify app → Redirect URIs: <strong>http://127.0.0.1:8888/callback</strong><br/>
+        • Google Cloud Console → Authorized redirect URIs: <strong>http://127.0.0.1:8889/callback</strong><br/>
+        You will be asked to sign in to your Spotify account after saving.
+      </p>
+
+      <p id="setup-error" class="error-text hidden"></p>
+
+      <button id="btn-setup-save" class="btn-primary btn-full" type="button">
+        <span data-i18n="setup.save">Save and continue</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="view-home" class="view hidden">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <span class="topbar-app-name">Stade</span>
+      </div>
+
+      <div class="topbar-right">
+        <div class="profile-chip-wrap">
+          <button id="profile-chip" class="profile-chip" type="button" aria-label="Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            <span data-i18n="settings.title">Settings</span>
+          </button>
+          <div id="profile-dropdown" class="profile-dropdown hidden">
+            <button id="btn-linked-accounts" class="pd-action-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+              </svg>
+              <span data-i18n="profile.linkedAccounts">Connected Accounts</span>
+            </button>
+            <button id="btn-edit-credentials" class="pd-action-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <span data-i18n="profile.editCredentials">Edit Credentials</span>
+            </button>
+            <button id="btn-sp-reconnect" class="pd-action-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>
+              </svg>
+              <span data-i18n="profile.reconnectSpotify">Reconnect Spotify</span>
+            </button>
+            <div class="pd-divider"></div>
+            <div class="pd-settings-section">
+              <div class="pd-settings-header" data-i18n="settings.title">Settings</div>
+              <div class="pd-setting-row">
+                <span class="pd-setting-label" data-i18n="settings.language">Language</span>
+                <div class="pd-lang-pills">
+                  <button id="btn-lang-en" class="btn-lang" data-lang="en">EN</button>
+                  <button id="btn-lang-tr" class="btn-lang" data-lang="tr">TR</button>
+                </div>
+              </div>
+            </div>
+            <div class="pd-divider"></div>
+            <button id="btn-clear-playlists" class="pd-action-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+              <span data-i18n="profile.refreshPlaylists">Refresh Playlists</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="section-header">
+        <h2 class="section-title" data-i18n="home.myPlaylists">My Playlists</h2>
+        <span id="playlists-count" class="count-badge hidden"></span>
+        <div id="playlists-loading" class="spinner-wrap">
+          <div class="spinner"></div>
+          <span data-i18n="common.loading">Loading...</span>
+        </div>
+        <div class="search-wrap">
+          <input id="search-playlists" class="search-input" type="text"
+                 data-i18n-placeholder="home.search"
+                 placeholder="Search playlists..."
+                 autocomplete="off" spellcheck="false" />
+        </div>
+      </div>
+      <div id="playlists-grid" class="playlists-grid"></div>
+    </main>
+  </div>
+
+  <div id="view-tracks" class="view hidden">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button id="btn-back-home" class="btn-icon" data-tooltip="Back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <img id="track-playlist-img" class="topbar-cover" src="" alt="" />
+        <div>
+          <div id="track-playlist-name" class="topbar-playlist-name"></div>
+          <div id="track-playlist-meta" class="topbar-playlist-meta"></div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button id="btn-select-all" class="btn-ghost btn-sm" data-i18n="tracks.selectAll">Select All</button>
+        <button id="btn-deselect-all" class="btn-ghost btn-sm" data-i18n="tracks.deselectAll">Deselect All</button>
+      </div>
+    </header>
+
+    <div id="tracks-hero" class="tracks-hero hidden">
+      <img id="tracks-hero-bg" class="tracks-hero-bg" src="" alt="" />
+      <div class="tracks-hero-overlay"></div>
+    </div>
+
+    <div id="tracks-loading" class="spinner-wrap center-spinner hidden">
+      <div class="spinner"></div>
+      <span data-i18n="tracks.loading">Loading tracks...</span>
+    </div>
+
+    <div id="tracks-list" class="tracks-list"></div>
+
+    <div id="download-bar" class="download-bar hidden">
+      <span id="download-bar-count" class="download-bar-count"></span>
+      <div class="download-bar-right">
+        <button id="btn-select-folder" class="btn-ghost btn-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span id="btn-select-folder-text" data-i18n="tracks.selectFolder">Select Folder</span>
+        </button>
+        <button id="btn-start-download" class="btn-primary btn-sm" disabled data-i18n="tracks.download">↓ Download</button>
+        <button id="btn-start-transfer" class="btn-transfer btn-sm" disabled data-i18n="tracks.transfer">→ Transfer</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-download" class="view hidden">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button id="btn-back-tracks" class="btn-icon" data-tooltip="Back" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <div>
+          <div class="topbar-playlist-name" data-i18n="download.title">Downloading</div>
+          <div id="dl-summary" class="topbar-playlist-meta" data-i18n="download.preparing">Preparing...</div>
+        </div>
+      </div>
+    </header>
+
+    <div id="init-overlay" class="init-overlay hidden">
+      <div class="init-box">
+        <div class="spinner"></div>
+        <p id="init-message" class="init-message" data-i18n="download.initMessage">Downloading yt-dlp...</p>
+        <p class="init-sub" data-i18n="download.initSub">This only happens on the first run.</p>
+      </div>
+    </div>
+
+    <div id="download-list" class="download-list"></div>
+
+    <div id="download-done-bar" class="download-bar hidden">
+      <span id="dl-done-text" class="download-bar-count"></span>
+      <div class="download-bar-right">
+        <button id="btn-open-folder" class="btn-ghost btn-sm" data-i18n="download.openFolder">📂 Open Folder</button>
+        <button id="btn-done" class="btn-primary btn-sm" data-i18n="common.done">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-accounts" class="view hidden">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button id="btn-back-accounts" class="btn-icon" data-tooltip="Back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <div>
+          <div class="topbar-playlist-name" data-i18n="accounts.title">Connected Accounts</div>
+          <div class="topbar-playlist-meta" data-i18n="accounts.subtitle">Connect your YouTube account to transfer playlists</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="accounts-content">
+
+      <div class="account-card" id="account-card-youtube">
+        <div class="account-card-left">
+          <div class="account-platform-icon yt-icon" id="yt-platform-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+              <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
+            </svg>
+          </div>
+          <img id="yt-channel-thumb" class="yt-channel-thumb hidden" src="" alt="" />
+          <div class="account-card-info">
+            <div class="account-platform-name">YouTube</div>
+            <div id="yt-account-status" class="account-status-text" data-i18n="accounts.notConnected">Not connected</div>
+          </div>
+        </div>
+        <div class="account-card-right">
+          <button id="btn-yt-connect" class="btn-primary btn-sm" data-i18n="accounts.connect">Connect</button>
+          <button id="btn-yt-disconnect" class="btn-ghost btn-sm hidden" data-i18n="accounts.disconnect">Disconnect</button>
+          <button id="btn-yt-logs" class="btn-ghost btn-sm hidden" data-i18n="accounts.logs">Logs</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="modal-credentials" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" data-i18n="credentials.title">API Credentials</h3>
+        <button id="btn-credentials-close" class="btn-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" data-i18n="setup.ytClientId">YouTube Client ID</label>
+        <input id="cred-yt-id" class="form-input" type="text" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="setup.ytClientSecret">YouTube Client Secret</label>
+        <input id="cred-yt-secret" class="form-input" type="password" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="setup.spotifyClientId">Spotify Client ID</label>
+        <input id="cred-sp-id" class="form-input" type="text" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="setup.spotifyClientSecret">Spotify Client Secret</label>
+        <input id="cred-sp-secret" class="form-input" type="password" autocomplete="off" spellcheck="false" />
+      </div>
+
+      <p id="cred-error" class="error-text hidden"></p>
+
+      <div class="modal-footer">
+        <button id="btn-credentials-cancel" class="btn-ghost btn-sm" data-i18n="common.cancel">Cancel</button>
+        <button id="btn-credentials-save" class="btn-primary btn-sm" data-i18n="credentials.save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-transfer" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="transfer-modal-title" data-i18n="transfer.title">Transfer to YouTube</h3>
+        <button id="btn-modal-close" class="btn-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <p class="modal-sub"><span id="transfer-track-count"></span></p>
+
+      <div class="form-group">
+        <label class="form-label" data-i18n="transfer.playlistName">Playlist Name</label>
+        <input id="input-transfer-name" class="form-input" type="text" autocomplete="off" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="transfer.description">Description (optional)</label>
+        <input id="input-transfer-desc" class="form-input" type="text" autocomplete="off" />
+      </div>
+      <div class="form-group" id="transfer-privacy-group">
+        <label class="form-label" data-i18n="transfer.privacy">Privacy</label>
+        <select id="select-transfer-privacy" class="form-input">
+          <option value="private" data-i18n="transfer.private">Private</option>
+          <option value="unlisted" data-i18n="transfer.unlisted">Unlisted</option>
+          <option value="public" data-i18n="transfer.public">Public</option>
+        </select>
+      </div>
+
+      <p id="transfer-error" class="error-text hidden"></p>
+
+      <div class="modal-footer">
+        <button id="btn-modal-cancel" class="btn-ghost btn-sm" data-i18n="common.cancel">Cancel</button>
+        <button id="btn-transfer-start" class="btn-primary btn-sm" data-i18n="transfer.start">Transfer</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-transfer-progress" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" data-i18n="transfer.progressTitle">Transferring...</h3>
+      </div>
+      <div id="transfer-progress-list" class="transfer-progress-list"></div>
+      <div id="transfer-done-row" class="modal-footer hidden">
+        <a id="transfer-yt-link" href="#" class="btn-ghost btn-sm" target="_blank" data-i18n="transfer.openYT">Open on YouTube</a>
+        <button id="btn-transfer-done" class="btn-primary btn-sm" data-i18n="common.done">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-transfer-logs" class="modal-overlay hidden">
+    <div class="modal-box modal-box-lg">
+      <div class="modal-header">
+        <h3 class="modal-title" data-i18n="accounts.logsTitle">Transfer History</h3>
+        <button id="btn-logs-close" class="btn-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div id="transfer-logs-list" class="transfer-logs-list">
+        <p id="transfer-logs-empty" class="logs-empty hidden" data-i18n="accounts.logsEmpty">No transfers yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="offline-overlay" class="offline-overlay hidden">
+    <div class="offline-box">
+      <div class="offline-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" width="48" height="48">
+          <line x1="1" y1="1" x2="23" y2="23"></line>
+          <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+          <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+          <path d="M10.71 5.05A16 16 0 0 1 22.56 9"></path>
+          <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+          <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+          <line x1="12" y1="20" x2="12.01" y2="20"></line>
+        </svg>
+      </div>
+      <h2 id="offline-title" class="offline-title"></h2>
+      <p id="offline-sub" class="offline-sub"></p>
+      <button id="btn-offline-retry" class="btn-primary"></button>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="app.js"></script>
+</body>
+</html>

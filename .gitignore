@@ -1,0 +1,11 @@
+node_modules/
+dist/
+out/
+.env
+.env.*
+*.env
+.webpack/
+~/.spot/
+.DS_Store
+.vscode/
+*.swp
