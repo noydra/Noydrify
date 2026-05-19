@@ -2,7 +2,7 @@
 
 const TRANSLATIONS = {
   en: {
-    'setup.subtitle': 'Enter your own API credentials to use Stade.',
+    'setup.subtitle': 'Enter your own API credentials to use Noydrify.',
     'setup.ytClientId': 'YouTube Client ID',
     'setup.ytClientSecret': 'YouTube Client Secret',
     'setup.spotifyClientId': 'Spotify Client ID',
@@ -16,8 +16,8 @@ const TRANSLATIONS = {
     'credentials.saved': 'Credentials saved.',
     'home.myPlaylists': 'My Playlists',
     'home.noPlaylists': 'No playlists found in your Spotify account.',
-    'home.removePlaylist': 'Hide from Stade',
-    'home.confirmRemove': 'Hide "{name}" from your Stade library?',
+    'home.removePlaylist': 'Hide from Noydrify',
+    'home.confirmRemove': 'Hide "{name}" from your Noydrify library?',
     'home.playlistRemoved': 'Playlist hidden.',
     'home.removeFailed': 'Could not hide playlist.',
     'home.search': 'Search playlists...',
@@ -91,7 +91,7 @@ const TRANSLATIONS = {
     'offline.retry': 'Retry',
   },
   tr: {
-    'setup.subtitle': 'Stade\'i kullanmak için kendi API bilgilerinizi girin.',
+    'setup.subtitle': 'Noydrify\'i kullanmak için kendi API bilgilerinizi girin.',
     'setup.ytClientId': 'YouTube Client ID',
     'setup.ytClientSecret': 'YouTube Client Secret',
     'setup.spotifyClientId': 'Spotify Client ID',
@@ -105,8 +105,8 @@ const TRANSLATIONS = {
     'credentials.saved': 'Kimlik bilgileri kaydedildi.',
     'home.myPlaylists': 'Çalma Listelerim',
     'home.noPlaylists': 'Spotify hesabında çalma listesi bulunamadı.',
-    'home.removePlaylist': 'Stade\'den gizle',
-    'home.confirmRemove': '"{name}" Stade kütüphanenden gizlensin mi?',
+    'home.removePlaylist': 'Noydrify\'den gizle',
+    'home.confirmRemove': '"{name}" Noydrify kütüphanenden gizlensin mi?',
     'home.playlistRemoved': 'Playlist gizlendi.',
     'home.removeFailed': 'Playlist gizlenemedi.',
     'home.search': 'Çalma listesi ara...',

@@ -118,7 +118,7 @@ function authorizeSpotify(parentWindow, clientId, clientSecret) {
 
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
         res.end(
-          '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Stade</title></head>' +
+          '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Noydrify</title></head>' +
           '<body style="background:#121212;color:#fff;font-family:sans-serif;display:flex;' +
           'align-items:center;justify-content:center;height:100vh;margin:0">' +
           '<p>Authentication complete. You may close this window.</p></body></html>'
@@ -196,7 +196,7 @@ async function spotifyApiGet(accessToken, pathWithQuery) {
     headers: {
       'Authorization': `Bearer ${accessToken}`,
       'Accept':        'application/json',
-      'User-Agent':    'Stade/1.0',
+      'User-Agent':    'Noydrify/1.0',
     },
     signal:  AbortSignal.timeout(20_000),
   });

@@ -24,7 +24,7 @@ function createWindow() {
     },
     backgroundColor: '#121212',
     show: false,
-    title: 'Stade',
+    title: 'Noydrify',
   });
 
   mainWindow.loadFile(path.join(__dirname, 'renderer', 'index.html'));

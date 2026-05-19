@@ -19,7 +19,7 @@
   },
   "build": {
     "appId": "com.stade.app",
-    "productName": "Stade",
+    "productName": "Noydrify",
     "directories": {
       "output": "dist"
     },
