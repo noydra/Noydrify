@@ -1,6 +1,6 @@
-# Stade
+# Noydrify
 
-Stade is a desktop app that lets you mirror your Spotify playlists to YouTube and download tracks as MP3s. You bring your own API credentials — the app stores them locally and never sends them anywhere else.
+Noydrify is a desktop app that lets you mirror your Spotify playlists to YouTube and download tracks as MP3s. You bring your own API credentials — the app stores them locally and never sends them anywhere else.
 
 ## What it does
 
